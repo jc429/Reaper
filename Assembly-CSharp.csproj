@@ -70,6 +70,7 @@
      <Compile Include="Assets\Scripts\System\Managers\LevelManager.cs" />
      <Compile Include="Assets\Scripts\System\Managers\SoulWallet.cs" />
      <Compile Include="Assets\Scripts\System\Managers\TransitionManager.cs" />
+     <Compile Include="Assets\Scripts\System\PaletteSprite.cs" />
      <Compile Include="Assets\Scripts\System\PColor.cs" />
      <Compile Include="Assets\Scripts\System\PMath.cs" />
      <Compile Include="Assets\Scripts\System\RenderSettings.cs" />
@@ -106,6 +107,7 @@
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
      <None Include="Assets\Imported\PixelArtCamera\PixelArtSprite.shader" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
+     <None Include="Assets\Shaders\SpriteWithPalette.shader" />
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>

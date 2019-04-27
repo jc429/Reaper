@@ -8,6 +8,7 @@ public class PlayerAnim : MonoBehaviour
 	SpriteRenderer _spriteRenderer;
 	[SerializeField]
 	PlayerMovement _movement;
+	PaletteSprite _palSprite;
 
 	int facing;
     // Start is called before the first frame update
@@ -15,6 +16,7 @@ public class PlayerAnim : MonoBehaviour
     {
         _animator = GetComponent<Animator>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
+		_palSprite = GetComponent<PaletteSprite>();
     }
 
     // Update is called once per frame
@@ -43,6 +45,7 @@ public class PlayerAnim : MonoBehaviour
 
 	public void PlaySlashAnim(){
 		_animator.SetBool("Slashing", true);
+		_palSprite.StartFlash(Color.white);
 	}
 
 	public void SlashEnded(){
