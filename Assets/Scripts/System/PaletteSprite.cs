@@ -9,26 +9,21 @@ public class PaletteSprite : MonoBehaviour
 	Texture2D paletteTex;
 	Color[] mSpriteColors;
 
-	float flashTimer = 0.0f;
 	const float flashDuration = 0.1f;
+	protected Timer flashTimer = new Timer();
 
     // Start is called before the first frame update
-    void Awake()
-    {
+    void Awake() {
         _spriteRenderer = GetComponent<SpriteRenderer>();
 		InitPaletteTex();
+		InitializeFlashTimer();
 		
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (flashTimer > 0.0f) {
-			flashTimer -= Time.deltaTime;
-			if (flashTimer <= 0.0f){
-				ResetColors();
-			}
-		}
+    void Update() {
+		UpdateFlashTimer();
+        
     }
 
 	public void InitPaletteTex(){
@@ -70,8 +65,35 @@ public class PaletteSprite : MonoBehaviour
 		paletteTex.Apply();
 	}
 
-	public void StartFlash(Color color){
-		flashTimer = flashDuration;
-		FlashColor(color);
+	
+
+	protected void InitializeFlashTimer(){
+		flashTimer = new Timer();
+		flashTimer.duration = flashDuration;
+	}
+
+	protected void UpdateFlashTimer(){
+		if(flashTimer.isActive){
+			flashTimer.AdvanceTimer(Time.deltaTime);
+			float f = Mathf.Lerp(1.0f,0.0f,flashTimer.GetCompletionPercentage());
+			_spriteRenderer.material.SetFloat("_FlashAmount", f);
+			if(flashTimer.isFinished){
+				FinishFlash();
+				flashTimer.ResetTimer();
+			}
+		}
+	}
+	
+	public virtual void StartFlash(){
+		if(_spriteRenderer == null){
+			Debug.Log("No Sprite Renderer :(");
+			return;
+		}
+		_spriteRenderer.material.SetFloat("_FlashAmount", 1);
+		flashTimer.ResetTimer();
+		flashTimer.SetActive(true);
+	}
+	
+	public virtual void FinishFlash(){
 	}
 }

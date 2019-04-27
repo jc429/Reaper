@@ -15,6 +15,10 @@ public class PlayerMovement : MonoBehaviour {
 	int numAirJumps;
 	bool isGrounded;
 
+	public Vector2Int coords = new Vector2Int();
+
+	
+
 	public bool IsMoving{
 		get{
 			return _rigidbody.velocity.x != 0;
@@ -39,6 +43,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (isGrounded) {
 			numAirJumps = maxAirJumps;
 		}
+		UpdateCoords();
 	}
 
 	void FixedUpdate () {
@@ -92,13 +97,25 @@ public class PlayerMovement : MonoBehaviour {
 		_anim.PlaySlashAnim();
 	}
 
+	
 
 
 
+	public void UpdateCoords(){
+		int intX = Mathf.RoundToInt(transform.position.x + GameController.xBound);
+		int intY = Mathf.RoundToInt(transform.position.y + GameController.yBound);
 
+		coords.x = intX / GameController.screenWidth;
+		coords.y = intY / GameController.screenHeight;
 
-
-
+		//hacky fix to prevent 4 rooms giving (0,0 as a result)
+		if(intX < 0){
+			coords.x -= 1;
+		}
+		if(intY < 0){
+			coords.y -= 1;
+		}
+	}
 
 	public bool Grounded() {
 		bool groundboys;
@@ -109,7 +126,7 @@ public class PlayerMovement : MonoBehaviour {
 		bool groundboysL = Physics.Raycast(transform.position + new Vector3(-0.425f, 0, 0), Vector3.down, 0.55f, Layers.GetGroundMask(false));
 		bool groundboysM = Physics.Raycast(transform.position, Vector3.down, 0.6f, Layers.GetGroundMask(false));
 		bool groundboysR = Physics.Raycast(transform.position + new Vector3(0.425f, 0, 0), Vector3.down, 0.55f, Layers.GetGroundMask(false));
-		groundboys = ((groundboysL && groundboysM) || (groundboysM && groundboysR));
+		groundboys = (groundboysL || groundboysM || groundboysR);
 		//can't use transform.up either for god knows what reason, you gotta use Vector3's versions 
 		Debug.DrawRay(transform.position, 0.6f * Vector3.down, (groundboysM ? Color.green : Color.white));
 		Debug.DrawRay(transform.position + new Vector3(-0.425f, 0, 0), Vector3.down * 0.55f, (groundboysL ? Color.green : Color.white));

@@ -3,6 +3,7 @@
 	Properties
 	{
 		[PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
+        _FlashAmount ("Flash Amount",Range(0.0,1.0)) = 0.0
 		_SwapTex("Palette", 2D) = "transparent" {}
 		_Color ("Tint", Color) = (1,1,1,1)
 		[MaterialToggle] PixelSnap ("Pixel snap", Float) = 0
@@ -65,6 +66,7 @@
 			sampler2D _AlphaTex;
 			float _AlphaSplitEnabled;
 			sampler2D _SwapTex;
+			float _FlashAmount;
 
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
@@ -83,10 +85,13 @@
 				fixed4 c = SampleSpriteTexture (IN.texcoord);
 				fixed4 swapCol = tex2D(_SwapTex, float2(c.r, 0));
   				fixed4 final = lerp(c, swapCol, swapCol.a) * IN.color;
+				final.rgb = lerp(final.rgb,float3(1.0,1.0,1.0),_FlashAmount);
 				final.a = c.a;
 				final.rgb *= c.a;
 				return final;
 			}
+
+			
 		ENDCG
 		}
 	}

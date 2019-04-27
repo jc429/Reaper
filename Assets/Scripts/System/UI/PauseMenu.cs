@@ -10,7 +10,7 @@ public class PauseMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_audio = GetComponent<AudioSource>();
-		GameManager.managerInstance.pauseMenu = this;
+		GameController.instance.pauseMenu = this;
 		pMenu.SetActive(false);
 		open = false;
 	}
@@ -24,18 +24,18 @@ public class PauseMenu : MonoBehaviour {
 		_audio.Play();
 		open = !open;
 		pMenu.SetActive(open);
-		GameManager.managerInstance.paused = open;
+		GameController.instance.paused = open;
 	}
 
 	public void OpenPauseMenu() {
-		GameManager.managerInstance.paused = true;
+		GameController.instance.paused = true;
 		_audio.Play();
 		pMenu.SetActive(true);
 		open = true;
 	}
 
 	public void ClosePauseMenu() {
-		GameManager.managerInstance.paused = false;
+		GameController.instance.paused = false;
 		_audio.Play();
 		pMenu.SetActive(false);
 		open = false;
@@ -43,11 +43,11 @@ public class PauseMenu : MonoBehaviour {
 
 	public void QuitLevel() {
 		ClosePauseMenu();
-		GameManager.managerInstance.GoToMainMenu();
+		GameController.instance.GoToMainMenu();
 	}
 
 	public void RestartLevel() {
 		ClosePauseMenu();
-		GameManager.managerInstance.ResetLevel();
+		GameController.instance.ResetLevel();
 	}
 }

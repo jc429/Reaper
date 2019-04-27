@@ -56,9 +56,11 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Imported\PixelArtCamera\PixelArtCamera.cs" />
+     <Compile Include="Assets\Scripts\BreakableBlock.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnim.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Player\UnlockTable.cs" />
+     <Compile Include="Assets\Scripts\Room.cs" />
      <Compile Include="Assets\Scripts\SoulCollectible.cs" />
      <Compile Include="Assets\Scripts\System\BackgroundMusic.cs" />
      <Compile Include="Assets\Scripts\System\EditorGrid.cs" />
@@ -66,8 +68,9 @@
      <Compile Include="Assets\Scripts\System\Managers\AudioManager.cs" />
      <Compile Include="Assets\Scripts\System\Managers\CameraController.cs" />
      <Compile Include="Assets\Scripts\System\Managers\Config.cs" />
-     <Compile Include="Assets\Scripts\System\Managers\GameManager.cs" />
+     <Compile Include="Assets\Scripts\System\Managers\GameController.cs" />
      <Compile Include="Assets\Scripts\System\Managers\LevelManager.cs" />
+     <Compile Include="Assets\Scripts\System\Managers\RoomManager.cs" />
      <Compile Include="Assets\Scripts\System\Managers\SoulWallet.cs" />
      <Compile Include="Assets\Scripts\System\Managers\TransitionManager.cs" />
      <Compile Include="Assets\Scripts\System\PaletteSprite.cs" />

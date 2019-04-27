@@ -6,29 +6,35 @@ using UnityEngine.SceneManagement;
 
 
 //TODO: Clean this bad boy UP 
-public class GameManager : MonoBehaviour {
+public class GameController : MonoBehaviour {
 	public const int _levelCeiling = 10;				//max height allowed 
 	public const bool _restartOnLevelCompletion = true;
 	const bool ERASE_ALL_DATA_ON_START = false;
 	public static bool DEBUG_MODE = true;
 	
-	public static GameManager managerInstance;			//the active instance of the game manager
+	public static GameController instance;			//the active instance of the game manager
 	AudioManager audioManager;
+	public static RoomManager roomManager;
 
 
 	public PauseMenu pauseMenu;
 	public OptionsMenu optionsMenu;
 	public bool paused;
 
+	public static readonly float xBound = 10f;
+	public static readonly float yBound = 7.5f;
+	public static readonly int screenWidth = 20;
+	public static readonly int screenHeight = 15;
+
 	
 
 	// Use this for initialization
 	void Awake() {
-		if (managerInstance == null) {
-			managerInstance = this;
+		if (instance == null) {
+			instance = this;
 			DontDestroyOnLoad(this.gameObject);
 		}
-		else if(managerInstance != this) {
+		else if(instance != this) {
 			Destroy(this.gameObject);
 		}
 		if (DEBUG_MODE && ERASE_ALL_DATA_ON_START) {
@@ -174,7 +180,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public static AudioManager GetAudioManager(){
-		return managerInstance.audioManager;
+		return instance.audioManager;
 	}
 
 	

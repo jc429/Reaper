@@ -10,7 +10,7 @@ public class OptionsMenu : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		_audio = GetComponent<AudioSource>();
-		GameManager.managerInstance.optionsMenu = this;
+		GameController.instance.optionsMenu = this;
 		oMenu.SetActive(false);
 		open = false;
 		if (clearMenu != null) {
@@ -71,6 +71,6 @@ public class OptionsMenu : MonoBehaviour {
 	}
 
 	public void ClearGameData() {
-		GameManager.managerInstance.ClearAllData();
+		GameController.instance.ClearAllData();
 	}
 }

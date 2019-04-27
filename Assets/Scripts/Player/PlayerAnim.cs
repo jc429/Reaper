@@ -11,6 +11,14 @@ public class PlayerAnim : MonoBehaviour
 	PaletteSprite _palSprite;
 
 	int facing;
+	public int Facing{
+		get{ return facing; }
+	}
+
+	public GameObject slashHitbox;
+	float slashHitboxOffsetX = 0.8f;
+	float slashHitboxOffsetY = 0.15f;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -45,10 +53,20 @@ public class PlayerAnim : MonoBehaviour
 
 	public void PlaySlashAnim(){
 		_animator.SetBool("Slashing", true);
-		_palSprite.StartFlash(Color.white);
+		//_palSprite.StartFlash();
 	}
 
 	public void SlashEnded(){
 		_animator.SetBool("Slashing", false);
+	}
+
+	public void ActivateHitbox(){
+		slashHitbox.transform.localPosition = new Vector3(Facing * slashHitboxOffsetX, slashHitboxOffsetY);
+		slashHitbox.gameObject.SetActive(true);
+	}
+
+	public void DeactivateHitbox(){
+		slashHitbox.transform.localPosition = Vector3.zero;
+		slashHitbox.gameObject.SetActive(false);
 	}
 }
