@@ -10,6 +10,10 @@ public class PlayerAnim : MonoBehaviour
 	PlayerMovement _movement;
 	PaletteSprite _palSprite;
 
+	AudioSource _audioSource;
+	public AudioClip jumpClip;
+	public AudioClip slashClip;
+
 	int facing;
 	public int Facing{
 		get{ return facing; }
@@ -17,7 +21,7 @@ public class PlayerAnim : MonoBehaviour
 
 	public GameObject slashHitbox;
 	float slashHitboxOffsetX = 0.8f;
-	float slashHitboxOffsetY = 0.15f;
+	float slashHitboxOffsetY = 0.4f;
 
     // Start is called before the first frame update
     void Awake()
@@ -25,6 +29,9 @@ public class PlayerAnim : MonoBehaviour
         _animator = GetComponent<Animator>();
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_palSprite = GetComponent<PaletteSprite>();
+		_audioSource = GetComponent<AudioSource>();
+		SetFacing(1);
+		DeactivateHitbox();
     }
 
     // Update is called once per frame
@@ -34,7 +41,10 @@ public class PlayerAnim : MonoBehaviour
     }
 
 	public void SetFacing(float f){
-		facing = PMath.GetSign(f);
+		int fSign = PMath.GetSign(f);
+		if(fSign != 0){
+			facing = fSign;
+		}
 		if(facing < 0){
 			_spriteRenderer.flipX = true;
 		}
@@ -51,13 +61,27 @@ public class PlayerAnim : MonoBehaviour
 		_animator.SetBool("Moving", moving);
 	}
 
+	public void PlayJumpSound(){
+		_audioSource.PlayOneShot(jumpClip);
+	}
+
 	public void PlaySlashAnim(){
-		_animator.SetBool("Slashing", true);
+		//_animator.SetBool("Slashing", true);
+		_animator.SetTrigger("Slashing");
+		_audioSource.PlayOneShot(slashClip);
 		//_palSprite.StartFlash();
 	}
 
+	public void PlayDieAnim(){
+		_animator.SetTrigger("Dead");
+	}
+
+	public void SetPlayerDead(){
+		_movement.isDead = true;
+	}
+
 	public void SlashEnded(){
-		_animator.SetBool("Slashing", false);
+		//_animator.SetBool("Slashing", false);
 	}
 
 	public void ActivateHitbox(){
@@ -66,7 +90,7 @@ public class PlayerAnim : MonoBehaviour
 	}
 
 	public void DeactivateHitbox(){
-		slashHitbox.transform.localPosition = Vector3.zero;
 		slashHitbox.gameObject.SetActive(false);
+		slashHitbox.transform.localPosition = Vector3.zero;
 	}
 }

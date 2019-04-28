@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 0162 //only meant to surpress the warning about unreachable code for erasing data -- TODO DELETE LATER
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	public static GameController instance;			//the active instance of the game manager
 	AudioManager audioManager;
 	public static RoomManager roomManager;
+	public static SFXManager sfxManager;
 
 
 	public PauseMenu pauseMenu;
@@ -26,7 +27,9 @@ public class GameController : MonoBehaviour {
 	public static readonly int screenWidth = 20;
 	public static readonly int screenHeight = 15;
 
-	
+	public PlayerMovement player;
+
+	public GameObject poofPrefab;
 
 	// Use this for initialization
 	void Awake() {
@@ -87,14 +90,15 @@ public class GameController : MonoBehaviour {
 				}
 			}
 			if (VirtualController.ResetButtonPressed()) {
-				ResetLevel();
+				ResetGame();
 			}
 
 			if(DEBUG_MODE){
 				if(Input.GetKeyDown(KeyCode.RightAlt)){
-				//	ScreenCapture.CaptureScreenshot("C:/Users/edibl_000/Pictures/games/frog stack/GameCap/test.png");
-					
-					Debug.Log("Screen capture saved!");
+					string time = System.DateTime.Now.ToString("yyyy'-'MM'-'dd'--'HH'-'mm'-'ss");
+					string path = System.IO.Path.Combine(Application.persistentDataPath, "Pictures/screenshot " + time + ".png");
+					ScreenCapture.CaptureScreenshot(path);
+					Debug.Log("Screen capture saved! " + path);
 				}
 
 				if(Input.GetKeyDown(KeyCode.Keypad0)){
@@ -122,8 +126,8 @@ public class GameController : MonoBehaviour {
 
 
 
-	public void LockPlayerMovement(){
-		
+	public void LockPlayerMovement(bool b = true){
+		player.controlsLocked = b;
 	}
 	
 
@@ -136,7 +140,8 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void ResetGame() {
-
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		SoulWallet.Reset();
 	}
 
 	public void CleanLevel(){

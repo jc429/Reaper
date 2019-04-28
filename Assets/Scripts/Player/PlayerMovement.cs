@@ -17,7 +17,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	public Vector2Int coords = new Vector2Int();
 
-	
+	public bool controlsLocked;
+	public bool isDead;
 
 	public bool IsMoving{
 		get{
@@ -27,12 +28,22 @@ public class PlayerMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_rigidbody = GetComponent<Rigidbody>();
+		GameController.instance.player = this;
+		Reset();
+	}
+
+	void Reset(){
+		controlsLocked = false;
+		isDead = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		isGrounded = Grounded();
 		_anim.SetGrounded(isGrounded);
+		if(controlsLocked){
+			return;
+		}
 		BasicMovement();
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			Jump();
@@ -76,7 +87,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		//	float jumpForce = 400f;
 		//	_rigidbody.AddForce(Vector3.up * jumpForce);
-		
+		_anim.PlayJumpSound();
 		Vector3 vel = _rigidbody.velocity;
 		vel.y = jumpSpeed;
 		_rigidbody.velocity = vel;
@@ -87,6 +98,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (numAirJumps <= 0) {
 			return;
 		}
+		_anim.PlayJumpSound();
 		numAirJumps--;
 		Vector3 vel = _rigidbody.velocity;
 		vel.y = jumpSpeed;
@@ -98,11 +110,20 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	
+	public void TakeDamage(){
+		Debug.Log("ow!");
+		int soulsLost = SoulWallet.LoseSouls();
+		
+	}
 
+	public void Die(){
+		controlsLocked = true;
+		_anim.PlayDieAnim();
+	}
 
 
 	public void UpdateCoords(){
-		int intX = Mathf.RoundToInt(transform.position.x + GameController.xBound);
+		int intX = Mathf.RoundToInt(transform.position.x - 0.5f + GameController.xBound);
 		int intY = Mathf.RoundToInt(transform.position.y + GameController.yBound);
 
 		coords.x = intX / GameController.screenWidth;
@@ -140,28 +161,29 @@ public class PlayerMovement : MonoBehaviour {
 		Vector3 origin = transform.position;
 		float[] distlist = new float[9];
 		float halfX = 0.5f;
+		float halfY = 0.45f;
 		float halfZ = 0.05f;
 
 		//Vector3 movedist = new Vector3(moveSpeed * Time.deltaTime, 0, movedir.z * moveSpeed * Time.deltaTime);
 		float moveSpeed = isGrounded ? groundMoveSpeed : airMoveSpeed;
 
-		Physics.Raycast(origin, new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.8f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[0] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.5f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.7f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[1] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.5f, halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.55f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[2] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0, halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.4f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[3] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.5f, halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.2f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[4] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.5f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[5] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.5f, -halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, -0.2f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[6] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0f, -halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, -0.35f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[7] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.5f, -halfZ), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, -0.45f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
 		distlist[8] = r.distance;
 
 		float shortest = 0;

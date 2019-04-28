@@ -56,12 +56,16 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Imported\PixelArtCamera\PixelArtCamera.cs" />
-     <Compile Include="Assets\Scripts\BreakableBlock.cs" />
+     <Compile Include="Assets\Scripts\Enemies\Enemy.cs" />
+     <Compile Include="Assets\Scripts\Objects\BreakableBlock.cs" />
+     <Compile Include="Assets\Scripts\Objects\DestroyAfterAnimating.cs" />
+     <Compile Include="Assets\Scripts\Objects\Destructible.cs" />
+     <Compile Include="Assets\Scripts\Objects\SoulCollectible.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerAnim.cs" />
+     <Compile Include="Assets\Scripts\Player\PlayerHitbox.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
      <Compile Include="Assets\Scripts\Player\UnlockTable.cs" />
-     <Compile Include="Assets\Scripts\Room.cs" />
-     <Compile Include="Assets\Scripts\SoulCollectible.cs" />
+     <Compile Include="Assets\Scripts\Rooms\Room.cs" />
      <Compile Include="Assets\Scripts\System\BackgroundMusic.cs" />
      <Compile Include="Assets\Scripts\System\EditorGrid.cs" />
      <Compile Include="Assets\Scripts\System\Layers.cs" />
@@ -71,8 +75,10 @@
      <Compile Include="Assets\Scripts\System\Managers\GameController.cs" />
      <Compile Include="Assets\Scripts\System\Managers\LevelManager.cs" />
      <Compile Include="Assets\Scripts\System\Managers\RoomManager.cs" />
+     <Compile Include="Assets\Scripts\System\Managers\SFXManager.cs" />
      <Compile Include="Assets\Scripts\System\Managers\SoulWallet.cs" />
      <Compile Include="Assets\Scripts\System\Managers\TransitionManager.cs" />
+     <Compile Include="Assets\Scripts\System\NamedArrayAttribute.cs" />
      <Compile Include="Assets\Scripts\System\PaletteSprite.cs" />
      <Compile Include="Assets\Scripts\System\PColor.cs" />
      <Compile Include="Assets\Scripts\System\PMath.cs" />
@@ -114,9 +120,6 @@
  <Reference Include="Unity.Timeline.Editor">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
- <Reference Include="com.unity.multiplayer-hlapi.Editor">
- <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Editor.dll</HintPath>
- </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
@@ -128,9 +131,6 @@
  </Reference>
  <Reference Include="Unity.CollabProxy.Editor">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
- </Reference>
- <Reference Include="com.unity.multiplayer-weaver.Editor">
- <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/com.unity.multiplayer-weaver.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.XR.LegacyInputHelpers">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/UnityEngine.XR.LegacyInputHelpers.dll</HintPath>
@@ -149,9 +149,6 @@
  </Reference>
  <Reference Include="UnityEditor.XR.LegacyInputHelpers">
  <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/UnityEditor.XR.LegacyInputHelpers.dll</HintPath>
- </Reference>
- <Reference Include="com.unity.multiplayer-hlapi.Runtime">
- <HintPath>D:/Libraries/Documents/Game Dev/Reaper/Library/ScriptAssemblies/com.unity.multiplayer-hlapi.Runtime.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.1.0f2/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
