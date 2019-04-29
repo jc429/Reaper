@@ -9,8 +9,33 @@ public class PlayerMovement : MonoBehaviour {
 	[SerializeField]
 	PlayerAnim _anim;
 
-	float groundMoveSpeed = 4f;
-	float airMoveSpeed = 3.2f;
+	const float baseMoveSpeedG = 4f;
+	const float baseMoveSpeedA = 3.2f;
+	const float spdMulti = 1.3f;
+	float GroundMoveSpeed{
+		get{
+			float f = baseMoveSpeedG;
+			if(UnlockTable.PowerUnlocked(UnlockID.MoveSpeed1)){
+				f *= spdMulti;
+			}
+			if(UnlockTable.PowerUnlocked(UnlockID.MoveSpeed2)){
+				f *= spdMulti;
+			}
+			return f;
+		}
+	}
+	float AirMoveSpeed{
+		get{
+			float f = baseMoveSpeedA;
+			if(UnlockTable.PowerUnlocked(UnlockID.MoveSpeed1)){
+				f *= spdMulti;
+			}
+			if(UnlockTable.PowerUnlocked(UnlockID.MoveSpeed2)){
+				f *= spdMulti;
+			}
+			return f;
+		}
+	}
 	float jumpSpeed = 9f;
 
 	const int maxAirJumps = 1;
@@ -49,10 +74,17 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		BasicMovement();
 		if (Input.GetKeyDown(KeyCode.Space)) {
-			Jump();
+			if(UnlockTable.PowerUnlocked(UnlockID.Jump)){
+				Jump();
+			}
 		}
 		else if (Input.GetKeyDown(KeyCode.LeftShift)) {
-			Slash();
+			if(Input.GetAxis("Horizontal") != 0 && UnlockTable.PowerUnlocked(UnlockID.DashSlash)){
+				DashSlash(PMath.GetSign(Input.GetAxis("Horizontal")));
+			}
+			else if(UnlockTable.PowerUnlocked(UnlockID.Slash)){
+				Slash();
+			}
 		}
 		if (isGrounded) {
 			numAirJumps = maxAirJumps;
@@ -88,7 +120,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Jump() {
 		if (!isGrounded) {
-			AirJump();
+			if(FacingAndTouchingWall() && UnlockTable.PowerUnlocked(UnlockID.WallJump)){
+
+			}
+			else if(UnlockTable.PowerUnlocked(UnlockID.AirJump)){
+				AirJump();
+			}
 			return;
 		}
 		//	float jumpForce = 400f;
@@ -115,6 +152,16 @@ public class PlayerMovement : MonoBehaviour {
 		_anim.PlaySlashAnim();
 	}
 
+	void DashSlash(int dir){
+		if(dir == 0){
+			dir = _anim.Facing;
+		}
+		_anim.PlayDashSlashAnim();
+	}
+
+	public void UnlockDownSlash(){
+		_anim.UnlockScytheJump();
+	}
 	
 	public void TakeDamage(){
 		//Debug.Log("ow!");
@@ -152,6 +199,10 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
+	bool FacingAndTouchingWall(){
+		return false;
+	}
+
 	public bool Grounded() {
 		bool groundboys;
 
@@ -176,7 +227,7 @@ public class PlayerMovement : MonoBehaviour {
 		float[] distlist = new float[5];
 
 		//Vector3 movedist = new Vector3(moveSpeed * Time.deltaTime, 0, movedir.z * moveSpeed * Time.deltaTime);
-		float moveSpeed = isGrounded ? groundMoveSpeed : airMoveSpeed;
+		float moveSpeed = isGrounded ? GroundMoveSpeed : AirMoveSpeed;
 		float spd =  0.5f + (moveSpeed * Time.deltaTime);
 		Vector3 dir = new Vector3(movedir.x, 0);
 		Physics.Raycast(origin + new Vector3(0, 0.8f, 0), dir, out r, spd, Layers.GetGroundMask(false));

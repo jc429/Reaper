@@ -61,19 +61,20 @@ public class Enemy : Destructible
 			}
 			transform.position += moveDir;
 
-			bool gf = Physics.Raycast(origin + new Vector3(facing * 0.4f, -0.5f), Vector3.down, out r, 0.65f, Layers.GetGroundMask(false));
-			bool gb = Physics.Raycast(origin + new Vector3(facing * -0.4f, -0.5f), Vector3.down, out r, 0.65f, Layers.GetGroundMask(false));
+			bool gf = Physics.Raycast(origin + new Vector3(facing * 0.4f, 0), Vector3.down, out r, 0.65f, Layers.GetGroundMask(false));
+			bool gb = Physics.Raycast(origin + new Vector3(facing * -0.4f, 0), Vector3.down, out r, 0.65f, Layers.GetGroundMask(false));
 			if(gb && !gf){
 				SetFacing(-1 * facing); 
 			}
-			Debug.DrawRay(origin + new Vector3(facing * 0.4f, -0.5f), 0.65f * Vector3.down, (gf ? Color.green : Color.white));
-			Debug.DrawRay(origin + new Vector3(facing * -0.4f, -0.5f), 0.65f * Vector3.down, (gb ? Color.green : Color.white));
+			Debug.DrawRay(origin + new Vector3(facing * 0.4f, 0), 0.65f * Vector3.down, (gf ? Color.green : Color.white));
+			Debug.DrawRay(origin + new Vector3(facing * -0.4f, 0), 0.65f * Vector3.down, (gb ? Color.green : Color.white));
 		}
     }
 
 	void OnTriggerEnter(Collider other){
 		if(other.tag.Equals("Player")){
 			GameController.instance.player.TakeDamage();
+			SetFacing(facing * -1);
 		}
 	}
 
@@ -94,6 +95,7 @@ public class Enemy : Destructible
 		if(_palSprite != null){
 			_palSprite.StartFlash();
 		}
+		move = false;
 		hp -= dmg;
 		hp = Mathf.Clamp(hp, 0, maxHP);
 

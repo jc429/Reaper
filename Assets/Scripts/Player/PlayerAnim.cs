@@ -75,6 +75,13 @@ public class PlayerAnim : MonoBehaviour
 		//_palSprite.StartFlash();
 	}
 
+	public void PlayDashSlashAnim(){
+		//_animator.SetBool("Slashing", true);
+		_animator.SetTrigger("Dashing");
+		_audioSource.PlayOneShot(slashClip);
+		//_palSprite.StartFlash();
+	}
+
 	public void PlayHurtAnim(){
 		DisableInteractions();
 		_palSprite.StartFlash();
@@ -99,6 +106,10 @@ public class PlayerAnim : MonoBehaviour
 
 	public void SlashEnded(){
 		//_animator.SetBool("Slashing", false);
+	}
+
+	public void UnlockScytheJump(){
+		_animator.SetBool("ScytheJump",true);
 	}
 
 	public void ActivateHitbox(){

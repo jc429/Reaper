@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PurchaseItem : MonoBehaviour
 {
+	public UnlockID unlockID;
 	public int itemCost;
 	bool purchased;
 	public bool Purchased{
@@ -55,13 +56,18 @@ public class PurchaseItem : MonoBehaviour
 	}
 
 	public void AttemptPurchase(){
+		
 		if(itemCost <= SoulWallet.SoulCount){
+			ConfirmPurchase();
+		}
+		if(GameController.DEBUG_MODE){
 			ConfirmPurchase();
 		}
 	}
 
 	public void ConfirmPurchase(){
 		SoulWallet.SpendSouls(itemCost);
+		UnlockTable.UnlockPower(unlockID);
 		purchased = true;
 		iconPanel.sprite = obtainedPanel;
 		for(int i = 0; i < 3; i++){

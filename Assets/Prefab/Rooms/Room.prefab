@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionArea: {fileID: 5665406934201211515}
-  entityContainer: {fileID: 6532041450830828555}
+  entityContainer: {fileID: 8401781252827293653}
   fixedLayout: 0
   isRegistered: 0
   neighbors:

@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour
 	[SerializeField]
 	Room roomPrefab;
 	Vector2Int currentRoomCoords;
+	Room currentRoom;
 
 	public Room startingRoom;
 
@@ -108,6 +109,11 @@ public class RoomManager : MonoBehaviour
 
 
 		currentRoomCoords = GameController.instance.player.coords;
+		if(currentRoom != null){
+			currentRoom.SetEntitiesActive(false);
+		}
+		currentRoom = GetRoomByCoords(currentRoomCoords);
+		currentRoom.SetEntitiesActive(true);
 	}
 
 	public Room GenerateRoom(Vector2Int coords){
@@ -120,7 +126,7 @@ public class RoomManager : MonoBehaviour
 		room.SetCoords(coords);
 		room.Generate();
 		room.SpawnEnemies();
-
+		room.SetEntitiesActive(false);
 		return room;
 	}
 

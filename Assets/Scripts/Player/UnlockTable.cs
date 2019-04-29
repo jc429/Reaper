@@ -3,35 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class UnlockTable {
-	public static bool rightUnlocked = true;
-	public static bool leftUnlocked = true;
+	static bool[] unlocks = new bool[12];
 
-	public static bool canJump = false;
-	public static int numAirJumps = 0;
-	public static int airDriftLevel = 0;
-
-	
-
-	public static void UnlockPower(PowerUnlock unlock){
-		switch(unlock){
-			case PowerUnlock.Jump:
-				canJump = true;
-				break;
-			case PowerUnlock.AirJump:
-				numAirJumps++;
-				break;
-
-
-
-
-			default:
-				break;
+	public static void Clear(){
+		for(int i = 0; 0 < 12; i++){
+			unlocks[i] = false;
 		}
+	}
+
+	public static void UnlockPower(UnlockID unlockID){
+		unlocks[(int)unlockID] = true;
+		if(unlockID == UnlockID.DownSlash){
+			if(GameController.instance.player != null){
+				GameController.instance.player.UnlockDownSlash();
+			}
+		}
+	}
+
+	public static bool PowerUnlocked(UnlockID unlockID){
+		return unlocks[(int)unlockID];
 	}
 }
 
-public enum PowerUnlock{
+public enum UnlockID{
 	Jump,
 	AirJump,
-	Slash
+	WallJump,
+	Slash,
+	DownSlash,
+	UpSlash,
+	MoveSpeed1,
+	MoveSpeed2,
+	DashSlash,
+	RedMode,
+	BlueMode,
+	GreenMode,
 }

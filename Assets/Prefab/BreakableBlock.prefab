@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 4817486013569313007}
   - component: {fileID: 4817486013569313006}
   - component: {fileID: 4817486013569313004}
+  - component: {fileID: 831141407}
+  - component: {fileID: 831141408}
   m_Layer: 13
   m_Name: BreakableBlock
   m_TagString: Untagged
@@ -114,6 +116,31 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 0.2}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &831141407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4817486013569312976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63b7851785ffeae48bdb8576e6533967, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &831141408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4817486013569312976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45d84bc8fa849b04995f841ecd504446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cell_size: 1
 --- !u!1 &4817486013768655309
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4817486013768655306}
   - component: {fileID: 4817486013768655307}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

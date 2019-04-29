@@ -20,7 +20,7 @@ public struct RoomBorderOpening{
 public class Room : MonoBehaviour
 {
 	public GameObject collisionArea;
-	public Transform entityContainer;
+	public GameObject entityContainer;
 
 	public bool fixedLayout; 
 
@@ -42,6 +42,7 @@ public class Room : MonoBehaviour
 
 	List<Vector2Int> spawns;
 	int[,] solidTiles;
+	List<Vector2Int> floorTiles; //solid tiles with gaps above them
 
 	public Enemy enemyPrefab;
 	List<Enemy> enemyList;
@@ -61,6 +62,7 @@ public class Room : MonoBehaviour
 	public void Initialize(){
 		solidTiles = new int[21,15];
 		spawns = new List<Vector2Int>();
+		floorTiles = new List<Vector2Int>();
 		enemyList = new List<Enemy>();
 	}
 
@@ -256,6 +258,14 @@ public class Room : MonoBehaviour
 
 			AddCollider(startPos,startPos+size);
 		}
+
+		for(int x = 1; x < 20; x++){
+			for(int y = 0; y < 14; y++){
+				if(CheckTile(x,y) == 1 && CheckTile(x,y+1) == 0){
+					floorTiles.Add(new Vector2Int(x,y+1));
+				}
+			}
+		}
 	}
 
 	void SetEnemySpawnLocations(){
@@ -263,9 +273,17 @@ public class Room : MonoBehaviour
 		int r1 = Random.Range(0,8);
 		int r2 = Random.Range(0,8);
 		int numSpawns = (r1 + r2) / 2;
+		int numValidFloorTiles = 17 - borderOpenings[2].length;
+		if(numSpawns > numValidFloorTiles){
+			numSpawns = numValidFloorTiles;
+		}
 
 		for(int i = 0; i < numSpawns; i++){
-			Vector2Int spawnPos = new Vector2Int();
+			int r = Random.Range(0,floorTiles.Count);
+			if(!spawns.Contains(floorTiles[r])){
+				spawns.Add(floorTiles[r]);
+			}
+			/*Vector2Int spawnPos = new Vector2Int();
 			spawnPos.x = Random.Range(2,18);
 			spawnPos.y = Random.Range(1,10);
 			
@@ -281,14 +299,21 @@ public class Room : MonoBehaviour
 						break;
 					}
 				}
-			}
+			}*/
+
+
+
 		}
+	}
+
+	public void SetEntitiesActive(bool active){
+		entityContainer.SetActive(active);
 	}
 
 	public void SpawnEnemies(){
 		for(int i = 0; i < spawns.Count; i++){
 			Enemy e = Instantiate(enemyPrefab);
-			e.transform.parent = entityContainer;
+			e.transform.parent = entityContainer.transform;
 			e.transform.localPosition = new Vector3(spawns[i].x, spawns[i].y);
 			enemyList.Add(e);
 		}
@@ -313,6 +338,13 @@ public class Room : MonoBehaviour
 			return -1;
 		}
 		return solidTiles[pos.x,pos.y];
+	}
+	
+	public int CheckTile(int x, int y){
+		if(x < 0 || x > 20 || y < 0 || y > 14){
+			return -1;
+		}
+		return solidTiles[x,y];
 	}
 
 	public void AddCollider(Vector2 startPos, Vector2 endPos){
