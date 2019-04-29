@@ -20,7 +20,6 @@ public class GameController : MonoBehaviour {
 
 	public PauseMenu pauseMenu;
 	public OptionsMenu optionsMenu;
-	public bool paused;
 
 	public static readonly float xBound = 10f;
 	public static readonly float yBound = 7.5f;
@@ -30,6 +29,7 @@ public class GameController : MonoBehaviour {
 	public PlayerMovement player;
 
 	public GameObject poofPrefab;
+	public GameObject soulPrefab;
 
 	// Use this for initialization
 	void Awake() {
@@ -64,12 +64,6 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (paused) {
-			Time.timeScale = 0;
-		}
-		else {
-			Time.timeScale = 1;
-		}
 		if (TransitionManager.IsTransitioning()) {
 			if (TransitionManager.GetScreenTransition().FadedOut()) {
 				TransitionManager.GoToDestination();	
@@ -124,7 +118,9 @@ public class GameController : MonoBehaviour {
 	
 	}
 
-
+	public static void FreezeGame(bool b = true){
+		Time.timeScale = b ? 0 : 1;
+	}
 
 	public void LockPlayerMovement(bool b = true){
 		player.controlsLocked = b;

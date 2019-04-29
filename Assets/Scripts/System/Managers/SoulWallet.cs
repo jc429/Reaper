@@ -11,6 +11,7 @@ public static class SoulWallet
 		}
 	}
 
+
 	public static void Reset(){
 		soulCount = 0;
 	}
@@ -22,7 +23,7 @@ public static class SoulWallet
 	public static int LoseSouls(){
 		int loss = 0;
 		if(soulCount == 0){
-			GameController.instance.player.Die();
+			return -1;
 		}
 		else if(soulCount == 1){
 			soulCount = 0;
@@ -35,5 +36,9 @@ public static class SoulWallet
 		}
 		soulCount -= loss;
 		return loss;
+	}
+
+	public static void SpendSouls(int amount){
+		soulCount -= amount;
 	}
 }

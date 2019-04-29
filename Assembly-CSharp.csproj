@@ -90,8 +90,11 @@
      <Compile Include="Assets\Scripts\System\UI\Cutscene.cs" />
      <Compile Include="Assets\Scripts\System\UI\OptionsMenu.cs" />
      <Compile Include="Assets\Scripts\System\UI\PauseMenu.cs" />
+     <Compile Include="Assets\Scripts\System\UI\PurchaseItem.cs" />
      <Compile Include="Assets\Scripts\System\UI\ScreenTransition.cs" />
      <Compile Include="Assets\Scripts\System\UI\SoulCounter.cs" />
+     <Compile Include="Assets\Scripts\System\UI\SoulShop.cs" />
+     <Compile Include="Assets\Scripts\System\UI\UINumber.cs" />
      <Compile Include="Assets\Scripts\System\VirtualController.cs" />
      <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />

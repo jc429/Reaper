@@ -23,6 +23,9 @@ public class PlayerAnim : MonoBehaviour
 	float slashHitboxOffsetX = 0.8f;
 	float slashHitboxOffsetY = 0.4f;
 
+	public GameObject hurtbox;
+	public GameObject interactbox;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -72,12 +75,26 @@ public class PlayerAnim : MonoBehaviour
 		//_palSprite.StartFlash();
 	}
 
+	public void PlayHurtAnim(){
+		DisableInteractions();
+		_palSprite.StartFlash();
+		_animator.SetTrigger("Hurt");
+	}
+
+	public void FinishHurtAnim(){
+		_movement.hitstun = false;
+		EnableInteractions();
+	}
+
 	public void PlayDieAnim(){
-		_animator.SetTrigger("Dead");
+		DisableInteractions();
+		_palSprite.StartFlash();
+		_animator.SetBool("Dead",true);
 	}
 
 	public void SetPlayerDead(){
 		_movement.isDead = true;
+		_animator.SetBool("Dead",true);
 	}
 
 	public void SlashEnded(){
@@ -86,11 +103,23 @@ public class PlayerAnim : MonoBehaviour
 
 	public void ActivateHitbox(){
 		slashHitbox.transform.localPosition = new Vector3(Facing * slashHitboxOffsetX, slashHitboxOffsetY);
-		slashHitbox.gameObject.SetActive(true);
+		slashHitbox.SetActive(true);
+		hurtbox.SetActive(false);
 	}
 
 	public void DeactivateHitbox(){
-		slashHitbox.gameObject.SetActive(false);
+		slashHitbox.SetActive(false);
+		hurtbox.SetActive(true);
 		slashHitbox.transform.localPosition = Vector3.zero;
+	}
+
+	public void EnableInteractions(){
+		hurtbox.SetActive(true);
+		interactbox.SetActive(true);
+	}
+
+	public void DisableInteractions(){
+		hurtbox.SetActive(false);
+		interactbox.SetActive(false);
 	}
 }

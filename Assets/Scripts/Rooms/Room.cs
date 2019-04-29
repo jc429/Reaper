@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 enum Directions{
 	North = 0,
@@ -18,8 +19,8 @@ public struct RoomBorderOpening{
 
 public class Room : MonoBehaviour
 {
-	public GameObject blockPrefab;
-	public GameObject blockContainer;
+	public GameObject collisionArea;
+	public Transform entityContainer;
 
 	public bool fixedLayout; 
 
@@ -35,6 +36,16 @@ public class Room : MonoBehaviour
 
 	public RoomBorderOpening[] borderOpenings = new RoomBorderOpening[4];
 
+
+	public Tilemap tileMap;
+	public Tile tile;
+
+	List<Vector2Int> spawns;
+	int[,] solidTiles;
+
+	public Enemy enemyPrefab;
+	List<Enemy> enemyList;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,6 +57,12 @@ public class Room : MonoBehaviour
     {
         
     }
+
+	public void Initialize(){
+		solidTiles = new int[21,15];
+		spawns = new List<Vector2Int>();
+		enemyList = new List<Enemy>();
+	}
 
 	public void SetCoords(int x, int y){
 		Vector2Int coords = new Vector2Int(x,y);
@@ -62,7 +79,13 @@ public class Room : MonoBehaviour
 		transform.localPosition = v;
 	}
 
-	public void GenerateEdges(){
+	public void Generate(){
+		GenerateEdges();
+		GenerateInternals();
+		SetEnemySpawnLocations();
+	}
+
+	void GenerateEdges(){
 		if(fixedLayout) return;
 		for(int i = 0; i < 4; i++){
 			bool vertical = (i % 2 != 0);
@@ -109,7 +132,7 @@ public class Room : MonoBehaviour
 			/* construct the tile sprites */
 			for(int k = 0; k < realEstate; k++){
 				if(k < borderOpenings[i].position || k >= (borderOpenings[i].position + borderOpenings[i].length)){
-					Vector3 blockPos = Vector3.zero;
+					Vector2Int blockPos = Vector2Int.zero;
 					switch(i){
 					case 0:
 						blockPos.x = k+1;
@@ -129,9 +152,10 @@ public class Room : MonoBehaviour
 						break;
 					}
 
-					GameObject block = Instantiate(blockPrefab);
-					block.transform.parent = blockContainer.transform;
-					block.transform.localPosition = blockPos;
+					SetSolidTile(blockPos);
+					//GameObject block = Instantiate(blockPrefab);
+					//block.transform.parent = blockContainer.transform;
+					//block.transform.localPosition = blockPos;
 				}
 			}
 
@@ -143,16 +167,16 @@ public class Room : MonoBehaviour
 				colStart.x = 1;
 				if(borderOpenings[i].length == 0){
 					colEnd.x = 19;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				else{
 					colEnd.x = borderOpenings[i].position;
 					if(colEnd.x >= colStart.x){
-						AddBorderCollider(colStart,colEnd);
+						AddCollider(colStart,colEnd);
 					}
 					colStart.x = borderOpenings[i].position + borderOpenings[i].length + 1;
 					colEnd.x = 19;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				break;
 			case 1:
@@ -160,16 +184,16 @@ public class Room : MonoBehaviour
 				colStart.y = 1;
 				if(borderOpenings[i].length == 0){
 					colEnd.y = 13;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				else{
 					colEnd.y = borderOpenings[i].position;
 					if(colEnd.y >= colStart.y){
-						AddBorderCollider(colStart,colEnd);
+						AddCollider(colStart,colEnd);
 					}
 					colStart.y = borderOpenings[i].position + borderOpenings[i].length + 1;
 					colEnd.y = 13;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				break;
 			case 2:
@@ -177,16 +201,16 @@ public class Room : MonoBehaviour
 				colStart.x = 1;
 				if(borderOpenings[i].length == 0){
 					colEnd.x = 19;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				else{
 					colEnd.x = borderOpenings[i].position;
 					if(colEnd.x >= colStart.x){
-						AddBorderCollider(colStart,colEnd);
+						AddCollider(colStart,colEnd);
 					}
 					colStart.x = borderOpenings[i].position + borderOpenings[i].length + 1;
 					colEnd.x = 19;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				break;
 			case 3:
@@ -194,16 +218,16 @@ public class Room : MonoBehaviour
 				colStart.y = 1;
 				if(borderOpenings[i].length == 0){
 					colEnd.y = 13;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				else{
 					colEnd.y = borderOpenings[i].position;
 					if(colEnd.y >= colStart.y){
-						AddBorderCollider(colStart,colEnd);
+						AddCollider(colStart,colEnd);
 					}
 					colStart.y = borderOpenings[i].position + borderOpenings[i].length + 1;
 					colEnd.y = 13;
-					AddBorderCollider(colStart,colEnd);
+					AddCollider(colStart,colEnd);
 				}
 				break;
 			}
@@ -211,9 +235,89 @@ public class Room : MonoBehaviour
 		}
 	}
 
-	public void AddBorderCollider(Vector2 startPos, Vector2 endPos){
+	void GenerateInternals(){
+		int r1 = Random.Range(0,6);
+		int r2 = Random.Range(0,6);
+		int numPlatforms = (r1 + r2) / 2;
+		for(int i = 0; i < numPlatforms; i++){
+			Vector2Int startPos = new Vector2Int();
+			Vector2Int size = new Vector2Int();
+			startPos.x = Random.Range(2,18);
+			startPos.y = Random.Range(2,12);
+			size.x = Random.Range(1,18-startPos.x);
+			size.y = Random.Range(1,12-startPos.y);
+
+			for(int j = 0; j <= size.x; j++){
+				for(int k = 0; k <= size.y; k++){
+					Vector2Int blockPos = new Vector2Int(startPos.x + j, startPos.y + k);
+					SetSolidTile(blockPos);
+				}
+			}
+
+			AddCollider(startPos,startPos+size);
+		}
+	}
+
+	void SetEnemySpawnLocations(){
+		spawns.Clear();
+		int r1 = Random.Range(0,8);
+		int r2 = Random.Range(0,8);
+		int numSpawns = (r1 + r2) / 2;
+
+		for(int i = 0; i < numSpawns; i++){
+			Vector2Int spawnPos = new Vector2Int();
+			spawnPos.x = Random.Range(2,18);
+			spawnPos.y = Random.Range(1,10);
+			
+			if(CheckTile(spawnPos) == 0){
+				spawns.Add(spawnPos);
+			}
+			else{
+				//if we're within a solid block try to keep climbing to spawn on top of it
+				for(int y2 = spawnPos.y + 1; y2 <= 10; y2++){
+					spawnPos.y = y2;
+					if(CheckTile(spawnPos) == 0){
+						spawns.Add(spawnPos);
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	public void SpawnEnemies(){
+		for(int i = 0; i < spawns.Count; i++){
+			Enemy e = Instantiate(enemyPrefab);
+			e.transform.parent = entityContainer;
+			e.transform.localPosition = new Vector3(spawns[i].x, spawns[i].y);
+			enemyList.Add(e);
+		}
+	}
+
+	public void DespawnEnemies(){
+		foreach(Enemy e in enemyList){
+			Destroy(e);
+		}
+	}
+
+	public void SetSolidTile(Vector2Int pos){
+		if(pos.x < 0 || pos.x > 20 || pos.y < 0 || pos.y > 14){
+			return;
+		}
+		solidTiles[pos.x,pos.y] = 1;
+		tileMap.SetTile(new Vector3Int(pos.x, pos.y,0),tile);
+	}
+
+	public int CheckTile(Vector2Int pos){
+		if(pos.x < 0 || pos.x > 20 || pos.y < 0 || pos.y > 14){
+			return -1;
+		}
+		return solidTiles[pos.x,pos.y];
+	}
+
+	public void AddCollider(Vector2 startPos, Vector2 endPos){
 		BoxCollider bc;
-		bc = blockContainer.AddComponent(typeof(BoxCollider)) as BoxCollider;
+		bc = collisionArea.AddComponent(typeof(BoxCollider)) as BoxCollider;
 		bc.center = Vector2.Lerp(startPos,endPos,0.5f);
 		bc.size = new Vector3(endPos.x - startPos.x + 1, endPos.y - startPos.y + 1, 0.2f);
 	}

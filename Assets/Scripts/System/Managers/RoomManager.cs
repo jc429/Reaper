@@ -116,9 +116,10 @@ public class RoomManager : MonoBehaviour
 			return rooms[coords];
 		}
 		Room room = Instantiate(roomPrefab);
-
+		room.Initialize();
 		room.SetCoords(coords);
-		room.GenerateEdges();
+		room.Generate();
+		room.SpawnEnemies();
 
 		return room;
 	}

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour {
-	Rigidbody _rigidbody;
+	Rigidbody _rigidbody{
+		get{ return GetComponent<Rigidbody>(); }
+	}
 	[SerializeField]
 	PlayerAnim _anim;
 
@@ -19,6 +21,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool controlsLocked;
 	public bool isDead;
+	public bool hitstun;
 
 	public bool IsMoving{
 		get{
@@ -27,7 +30,6 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		_rigidbody = GetComponent<Rigidbody>();
 		GameController.instance.player = this;
 		Reset();
 	}
@@ -35,13 +37,14 @@ public class PlayerMovement : MonoBehaviour {
 	void Reset(){
 		controlsLocked = false;
 		isDead = false;
+		hitstun = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		isGrounded = Grounded();
 		_anim.SetGrounded(isGrounded);
-		if(controlsLocked){
+		if(controlsLocked || hitstun){
 			return;
 		}
 		BasicMovement();
@@ -61,6 +64,9 @@ public class PlayerMovement : MonoBehaviour {
 		if (!isGrounded && _rigidbody.velocity.y < 5f) {
 			_rigidbody.AddForce(Physics.gravity * 2);
 		}
+		Vector3 v = _rigidbody.velocity;
+		v.y = Mathf.Max(v.y, -20);
+		_rigidbody.velocity = v;
 	}
 
 	void BasicMovement() {
@@ -111,9 +117,15 @@ public class PlayerMovement : MonoBehaviour {
 
 	
 	public void TakeDamage(){
-		Debug.Log("ow!");
+		//Debug.Log("ow!");
 		int soulsLost = SoulWallet.LoseSouls();
-		
+		if(soulsLost < 0){
+			Die();
+		}
+		hitstun = true;
+		_rigidbody.velocity = new Vector3(-2f * _anim.Facing, 1,0);
+		_anim.PlayHurtAnim();
+	
 	}
 
 	public void Die(){
@@ -123,8 +135,10 @@ public class PlayerMovement : MonoBehaviour {
 
 
 	public void UpdateCoords(){
-		int intX = Mathf.RoundToInt(transform.position.x - 0.5f + GameController.xBound);
+		float offX = (transform.position.x > -15) ? -0.5f : 0.5f;
+		int intX = Mathf.RoundToInt(transform.position.x + offX + GameController.xBound);
 		int intY = Mathf.RoundToInt(transform.position.y + GameController.yBound);
+		
 
 		coords.x = intX / GameController.screenWidth;
 		coords.y = intY / GameController.screenHeight;
@@ -159,39 +173,30 @@ public class PlayerMovement : MonoBehaviour {
 		if (movedir.Equals(Vector3.zero)) return Vector3.zero;
 		RaycastHit r;
 		Vector3 origin = transform.position;
-		float[] distlist = new float[9];
-		float halfX = 0.5f;
-		float halfY = 0.45f;
-		float halfZ = 0.05f;
+		float[] distlist = new float[5];
 
 		//Vector3 movedist = new Vector3(moveSpeed * Time.deltaTime, 0, movedir.z * moveSpeed * Time.deltaTime);
 		float moveSpeed = isGrounded ? groundMoveSpeed : airMoveSpeed;
-
-		Physics.Raycast(origin + new Vector3(0, 0.8f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		float spd =  0.5f + (moveSpeed * Time.deltaTime);
+		Vector3 dir = new Vector3(movedir.x, 0);
+		Physics.Raycast(origin + new Vector3(0, 0.8f, 0), dir, out r, spd, Layers.GetGroundMask(false));
+		Debug.DrawRay(origin + new Vector3(0, 0.8f, 0), spd * dir, (Color.white));
 		distlist[0] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.7f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.5f, 0), dir, out r, spd, Layers.GetGroundMask(false));
+		Debug.DrawRay(origin + new Vector3(0, 0.5f, 0), spd * dir, (Color.white));
 		distlist[1] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.55f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, 0.2f, 0), dir, out r, spd, Layers.GetGroundMask(false));
+		Debug.DrawRay(origin + new Vector3(0, 0.2f, 0), spd * dir, (Color.white));
 		distlist[2] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.4f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, -0.15f, 0), dir, out r, spd, Layers.GetGroundMask(false));
+		Debug.DrawRay(origin + new Vector3(0, -0.15f, 0), spd * dir, (Color.white));
 		distlist[3] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0.2f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
+		Physics.Raycast(origin + new Vector3(0, -0.45f, 0), dir, out r, spd, Layers.GetGroundMask(false));
+		Debug.DrawRay(origin + new Vector3(0, -0.45f, 0), spd * dir, (Color.white));
 		distlist[4] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, 0f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
-		distlist[5] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.2f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
-		distlist[6] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.35f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
-		distlist[7] = r.distance;
-		Physics.Raycast(origin + new Vector3(0, -0.45f, 0), new Vector3(movedir.x, 0, 0), out r, 0.5f + (moveSpeed * Time.deltaTime),Layers.GetGroundMask(false));
-		distlist[8] = r.distance;
 
-		float shortest = 0;
+		float shortest = float.MaxValue;
 		foreach (float f in distlist) {
-			if (shortest == 0) {
-				shortest = f;
-				continue;
-			}
 			if (f == 0) {
 				continue;
 			}
@@ -201,7 +206,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 
 		//Debug.Log(0.5f + (moveSpeed * Time.deltaTime));
-		if (shortest > 0) {
+		if (shortest > 0 && shortest < 100f) {
 			movedir.x *= (shortest - 0.5f);
 		}
 		else {

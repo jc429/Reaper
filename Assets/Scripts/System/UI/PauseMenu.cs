@@ -24,18 +24,18 @@ public class PauseMenu : MonoBehaviour {
 		_audio.Play();
 		open = !open;
 		pMenu.SetActive(open);
-		GameController.instance.paused = open;
+		GameController.FreezeGame(open);
 	}
 
 	public void OpenPauseMenu() {
-		GameController.instance.paused = true;
+		GameController.FreezeGame(true);
 		_audio.Play();
 		pMenu.SetActive(true);
 		open = true;
 	}
 
 	public void ClosePauseMenu() {
-		GameController.instance.paused = false;
+		GameController.FreezeGame(false);
 		_audio.Play();
 		pMenu.SetActive(false);
 		open = false;

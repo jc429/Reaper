@@ -105,6 +105,7 @@ public class Enemy : Destructible
 	void Die(){
 		SoulCollectible soul = Instantiate(soulPrefab);
 		soul.transform.position = this.transform.position;
+		soul.SetLaunchVelocity();
 		GameObject poof = Instantiate(GameController.instance.poofPrefab);
 		poof.transform.position = this.transform.position;
 		Destroy(gameObject);
