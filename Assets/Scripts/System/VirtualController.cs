@@ -48,25 +48,38 @@ public static class VirtualController {
 
 	/**********************************************************************************/
 
-	public static bool SpawnButtonPressed(bool held = false){
+	public static bool JumpButtonPressed(bool held = false){
+
+		return (Input.GetButtonDown("Jump"));
+
 		if(held){
-			return (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.LeftShift));
+			return (Input.GetKey(KeyCode.Space) 
+				|| Input.GetKey(KeyCode.W)
+				|| Input.GetKey(KeyCode.UpArrow) );
 		}
 		else{
-			return (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift));
+			return (Input.GetKeyDown(KeyCode.Space) 
+				|| Input.GetKeyDown(KeyCode.W)
+				|| Input.GetKeyDown(KeyCode.UpArrow) );
 		}
 	}
 
-	public static bool CroakButtonPressed(bool held = false){
+	public static bool ActionButtonPressed(bool held = false){
+
+		return Input.GetButtonDown("Action");
+
 		if(held){
-			return Input.GetKey(KeyCode.C);
+			return (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.LeftControl));
 		}
 		else{
-			return Input.GetKeyDown(KeyCode.C);
+			return (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.LeftControl));
 		}
 	}
 
 	public static bool PauseButtonPressed(bool held = false){
+
+		return (Input.GetButtonDown("Pause"));
+
 		if(held){
 			return (Input.GetKey(KeyCode.P) || Input.GetKey(KeyCode.Escape));
 		}
@@ -76,11 +89,20 @@ public static class VirtualController {
 	}
 
 	public static bool ResetButtonPressed(bool held = false){
+		
+		return (Input.GetButtonDown("Reset"));
+
 		if(held){
 			return Input.GetKey(KeyCode.R);
 		}
 		else{
 			return Input.GetKeyDown(KeyCode.R);
 		}
+	}
+
+	public static bool AnyKeyPressed(){
+		return ActionButtonPressed() || JumpButtonPressed() 
+		|| (GetAxisHorizontal() != 0) || (GetAxisVertical() != 0)
+		|| PauseButtonPressed();
 	}
 }

@@ -44,6 +44,12 @@ public class BreakableBlock : Destructible
 	}
 
 	void Die(){
+		int r = Random.Range(0,10);
+		if(r < 3){
+			SoulCollectible soul = Instantiate(GameController.instance.soulPrefab);
+			soul.transform.position = this.transform.position;
+			soul.SetLaunchVelocity();
+		}
 		gameObject.SetActive(false);
 	}
 }

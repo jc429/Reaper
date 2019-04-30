@@ -2,10 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PaletteIndex{
+	Black,
+	Red,
+	Green,
+	Blue
+}
 
 public class PaletteSprite : MonoBehaviour
 {
-	SpriteRenderer _spriteRenderer;
+	SpriteRenderer _spriteRenderer{
+		get { return GetComponent<SpriteRenderer>(); }
+	}
 	Texture2D paletteTex;
 	Color[] mSpriteColors;
 
@@ -14,10 +22,8 @@ public class PaletteSprite : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake() {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
 		InitPaletteTex();
 		InitializeFlashTimer();
-		
     }
 
     // Update is called once per frame
@@ -33,16 +39,23 @@ public class PaletteSprite : MonoBehaviour
 			colorSwapTex = new Texture2D(256, 1, TextureFormat.RGBA32, false, false);
 			colorSwapTex.filterMode = FilterMode.Point;
 			/*
-			for (int i = 0; i < colorSwapTex.width; ++i){
-				colorSwapTex.SetPixel(i, 0, new Color(0.0f, 0.0f, 0.0f, 0.0f));
-			}
-			colorSwapTex.Apply();*/	
+			*/	
 			_spriteRenderer.material.SetTexture("_SwapTex", colorSwapTex);
 		}
 	
 	
 		mSpriteColors = new Color[colorSwapTex.width];
 		paletteTex = colorSwapTex;
+	}
+
+	public void SetPalette(PaletteIndex index){
+		Texture2D colorSwapTex;
+		colorSwapTex = (Texture2D)_spriteRenderer.material.GetTexture("_SwapTex");
+		for (int i = 0; i < colorSwapTex.width; ++i){
+			Color c = colorSwapTex.GetPixel(i,(8 * (int)index) + 4);
+			colorSwapTex.SetPixel(i, 0, c);
+		}
+		colorSwapTex.Apply();
 	}
 
 	public void SwapColor(int index, Color color){

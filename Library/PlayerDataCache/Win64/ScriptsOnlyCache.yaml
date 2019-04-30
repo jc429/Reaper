@@ -6,6 +6,7 @@ ScriptsOnlyBuild:
     - DestroyAfterAnimating
     - EditorGrid
     - Enemy
+    - FlashingSprite
     - GameController
     - PaletteSprite
     - PixelArtCamera
@@ -19,6 +20,7 @@ ScriptsOnlyBuild:
     - SoulCollectible
     - SoulCounter
     - SoulShop
+    - TitleScreen
     - UINumber
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
@@ -138,6 +140,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 10604}
     - Class: 114
       Script: {instanceID: 10618}
+    - Class: 114
+      Script: {instanceID: 187684}
+    - Class: 114
+      Script: {instanceID: 190816}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -189,7 +195,7 @@ ScriptsOnlyBuild:
     className: TMP_Dropdown
   - hash:
       serializedVersion: 2
-      Hash: a735006269b8b51a98765105ae1077d6
+      Hash: 6a6b53db1a3fc1f4c8e3a69857c8d999
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Room
@@ -615,7 +621,7 @@ ScriptsOnlyBuild:
     className: VerticalLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: b76c11c0b49adba6d45480f52d8c6347
+      Hash: 7863c18976eeeb084971f3f238c43016
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: UINumber
@@ -657,7 +663,7 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 08e94fafe30ee0cf527e3747ae48ad7c
+      Hash: c392cb51d1b7fae6f0465ee8ed5cc1c4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SoulCounter
@@ -687,7 +693,7 @@ ScriptsOnlyBuild:
     className: ControlPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: 092960aca0b3daa2e26ade2897bedffd
+      Hash: 857341aa7105ab713801ee04602122c6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PurchaseItem
@@ -771,7 +777,7 @@ ScriptsOnlyBuild:
     className: EditorGrid
   - hash:
       serializedVersion: 2
-      Hash: 54b5ccfaacefa4a6b118e5f3ee918046
+      Hash: e4ecb0becc558d69a226dddf8479d6ae
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SFXManager
@@ -783,7 +789,7 @@ ScriptsOnlyBuild:
     className: SoulCollectible
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 2a2d7b828da8a3c9b45cde8b8c2e6fa1
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerHitbox
@@ -861,13 +867,13 @@ ScriptsOnlyBuild:
     className: TimelineAsset
   - hash:
       serializedVersion: 2
-      Hash: 60fd03b368a79123b2bdc447edbee91b
+      Hash: bc7313e0200511e337458bcee7098add
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerAnim
   - hash:
       serializedVersion: 2
-      Hash: 98a71f9a56b9836e32c2ca8a225845ce
+      Hash: a8f632f5367e0857194ff12b9b3a67fe
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SoulShop
@@ -933,7 +939,7 @@ ScriptsOnlyBuild:
     className: BackgroundMusic
   - hash:
       serializedVersion: 2
-      Hash: f5b0487c98a400a8d11c331feb0d2ad8
+      Hash: f6006c5461477b93d9642be6b30b56db
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Enemy
@@ -945,7 +951,7 @@ ScriptsOnlyBuild:
     className: TextMeshPro
   - hash:
       serializedVersion: 2
-      Hash: da66c0096bd4b56b459129c3a5baaf69
+      Hash: c770690dcb27208936c67f1f70a2a34a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameController
@@ -985,6 +991,18 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: afc5b93a7b192de2dcb3832fe35a5c7e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: FlashingSprite
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: TitleScreen
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity

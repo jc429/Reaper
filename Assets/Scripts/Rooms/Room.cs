@@ -14,6 +14,10 @@ enum Directions{
 public struct RoomBorderOpening{
 	public int position;
 	public int length;
+
+	public int RightEdge{
+		get{ return position + length; }
+	}
 }
 
 
@@ -47,6 +51,9 @@ public class Room : MonoBehaviour
 	public Enemy enemyPrefab;
 	List<Enemy> enemyList;
 
+	public BreakableBlock blockPrefab;
+	List<Vector2Int> blockLocations;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +71,7 @@ public class Room : MonoBehaviour
 		spawns = new List<Vector2Int>();
 		floorTiles = new List<Vector2Int>();
 		enemyList = new List<Enemy>();
+		blockLocations = new List<Vector2Int>();
 	}
 
 	public void SetCoords(int x, int y){
@@ -259,6 +267,8 @@ public class Room : MonoBehaviour
 			AddCollider(startPos,startPos+size);
 		}
 
+		SetBlockLocations();
+
 		for(int x = 1; x < 20; x++){
 			for(int y = 0; y < 14; y++){
 				if(CheckTile(x,y) == 1 && CheckTile(x,y+1) == 0){
@@ -266,6 +276,36 @@ public class Room : MonoBehaviour
 				}
 			}
 		}
+	}
+
+	void SetBlockLocations(){
+		int numBlocks = Random.Range(0,7);
+
+		for(int i = 0; i < numBlocks; i++){
+			int sizeX = Random.Range(1,4);
+			int sizeY = Random.Range(1,4);
+			int posX = Random.Range(1,20 - sizeX);
+			int posY = Random.Range(1,13 - sizeY);
+
+			Vector2Int blockPos = new Vector2Int(posX,posY);
+			for(int x = 0; x < sizeX; x++){
+				for(int y = 0; y < sizeY; y++){
+					Vector2Int pos = blockPos + new Vector2Int(x,y);
+					if(CheckTile(pos) == 0){
+						AddBlock(pos);
+						solidTiles[pos.x,pos.y] = 1;
+					}
+				}
+			}
+		}
+		
+	}
+
+	void AddBlock(Vector2Int pos){
+		blockLocations.Add(pos);
+		BreakableBlock block = Instantiate(blockPrefab);
+		block.transform.parent = entityContainer.transform;
+		block.transform.localPosition = new Vector3(pos.x, pos.y);
 	}
 
 	void SetEnemySpawnLocations(){
@@ -280,6 +320,13 @@ public class Room : MonoBehaviour
 
 		for(int i = 0; i < numSpawns; i++){
 			int r = Random.Range(0,floorTiles.Count);
+			//dont allow spawns right near an upper border opening
+			if(floorTiles[r].y > 10){
+				int xPos = floorTiles[r].x;
+				if(xPos >= borderOpenings[0].position && xPos <= borderOpenings[0].RightEdge){
+					continue;
+				}
+			}
 			if(!spawns.Contains(floorTiles[r])){
 				spawns.Add(floorTiles[r]);
 			}
@@ -313,6 +360,8 @@ public class Room : MonoBehaviour
 	public void SpawnEnemies(){
 		for(int i = 0; i < spawns.Count; i++){
 			Enemy e = Instantiate(enemyPrefab);
+			int r = Random.Range(0,2);
+			e.startFacing = (r < 1) ? -1 : 1;
 			e.transform.parent = entityContainer.transform;
 			e.transform.localPosition = new Vector3(spawns[i].x, spawns[i].y);
 			enemyList.Add(e);

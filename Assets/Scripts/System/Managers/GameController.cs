@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour {
 	public const int _levelCeiling = 10;				//max height allowed 
 	public const bool _restartOnLevelCompletion = true;
 	const bool ERASE_ALL_DATA_ON_START = false;
-	public static bool DEBUG_MODE = true;
+	public static bool DEBUG_MODE = false;
 	
 	public static GameController instance;			//the active instance of the game manager
 	AudioManager audioManager;
@@ -29,19 +29,18 @@ public class GameController : MonoBehaviour {
 	public PlayerMovement player;
 
 	public GameObject poofPrefab;
-	public GameObject soulPrefab;
+	public GameObject hitSparkPrefab;
+	public SoulCollectible soulPrefab;
 
 	// Use this for initialization
 	void Awake() {
+		
 		if (instance == null) {
 			instance = this;
 			DontDestroyOnLoad(this.gameObject);
 		}
 		else if(instance != this) {
 			Destroy(this.gameObject);
-		}
-		if (DEBUG_MODE && ERASE_ALL_DATA_ON_START) {
-			LevelManager.EraseAllLevelData();
 		}
 		audioManager = GetComponentInChildren<AudioManager>();
 
@@ -136,6 +135,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void ResetGame() {
+		player.Anim.SetPalette(0);
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		SoulWallet.Reset();
 	}

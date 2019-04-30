@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerHitbox : MonoBehaviour
 {
+	public int damage = 1; 
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class PlayerHitbox : MonoBehaviour
 	//	Debug.Log("SMASH");
 		Destructible destructible = other.GetComponent<Destructible>();
 		if(destructible != null){
-			destructible.TakeDamage();
+			destructible.TakeDamage(damage);
 		}
 	}
 }

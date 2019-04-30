@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class SoulCounter : MonoBehaviour
 {
-	public TextMeshProUGUI textbox;
-
 	public UINumber[] uiNumbers;
 
 	int targetCount;

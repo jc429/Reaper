@@ -215,6 +215,8 @@ MonoBehaviour:
   tileMap: {fileID: 6316855460350160308}
   tile: {fileID: 11400000, guid: 70ad0b02bf4f35343b9479be6f83e621, type: 2}
   enemyPrefab: {fileID: 545914754, guid: 400cbd46dc181a34e866c07c2e91a895, type: 3}
+  blockPrefab: {fileID: 4817486013569313007, guid: 33e6f2d14c0aa224db9414625217e810,
+    type: 3}
 --- !u!1 &7521500505325969579
 GameObject:
   m_ObjectHideFlags: 0

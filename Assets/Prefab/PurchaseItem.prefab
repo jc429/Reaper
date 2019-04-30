@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8101669869304656273}
   - component: {fileID: 3509154622538399988}
   - component: {fileID: 2676949088657967698}
-  - component: {fileID: 7533923067425824309}
   m_Layer: 5
   m_Name: PurchaseItem
   m_TagString: Untagged
@@ -68,63 +67,8 @@ MonoBehaviour:
   - {fileID: 6351124550172864964}
   buttonPanel: {fileID: 2813481463306850970}
   iconPanel: {fileID: 2820810445010236295}
-  obtainedPanel: {fileID: 21300000, guid: bb435e99d69ab98408c7b3b81ab587c0, type: 3}
---- !u!114 &7533923067425824309
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305226068001007643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2676949088657967698}
-        m_MethodName: AttemptPurchase
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
-      Culture=neutral, PublicKeyToken=null
+  activePanel: {fileID: 21300000, guid: ec65cc6afdcd2b242b84425db041af01, type: 3}
+  inactivePanel: {fileID: 21300000, guid: bb435e99d69ab98408c7b3b81ab587c0, type: 3}
 --- !u!1 &920442528714278073
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,6 +154,7 @@ GameObject:
   - component: {fileID: 9004320904078800811}
   - component: {fileID: 9000320720553884760}
   - component: {fileID: 2820810445010236295}
+  - component: {fileID: 4322585971946996907}
   m_Layer: 5
   m_Name: IconFrame
   m_TagString: Untagged
@@ -265,7 +210,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ec65cc6afdcd2b242b84425db041af01, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb435e99d69ab98408c7b3b81ab587c0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -274,6 +219,62 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
+--- !u!114 &4322585971946996907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456204284200234664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 0
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 2820810445010236295}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2676949088657967698}
+        m_MethodName: AttemptPurchase
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!1 &2813481463306850964
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,11 +310,11 @@ RectTransform:
   m_Father: {fileID: 8101669869304656273}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 12, y: 0}
-  m_SizeDelta: {x: 24, y: 13}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 12, y: 1}
+  m_SizeDelta: {x: 24, y: 15}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &2813481463306850971
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -342,7 +343,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: feb40937cbd28ac479967618f3d96641, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f02ec9bb5a8580341b320ebf9c6125b5, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -426,7 +427,7 @@ PrefabInstance:
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}
@@ -563,7 +564,7 @@ PrefabInstance:
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}
@@ -700,7 +701,7 @@ PrefabInstance:
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -3
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2719235975061370780, guid: f8290d3a07b6f3e40b055bcf364f19cb,
         type: 3}

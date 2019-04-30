@@ -11,7 +11,7 @@ public class Enemy : Destructible
 	public int maxHP = 1;
 	int hp;
 	
-	public SoulCollectible soulPrefab;
+	//public SoulCollectible soulPrefab;
 
 	int facing;
 	public int startFacing = 1;
@@ -32,7 +32,7 @@ public class Enemy : Destructible
 
 	protected virtual void Start(){
 		hp = maxHP;
-		facing = startFacing;
+		SetFacing(startFacing);
 	}
 
     // Update is called once per frame
@@ -95,6 +95,7 @@ public class Enemy : Destructible
 		if(_palSprite != null){
 			_palSprite.StartFlash();
 		}
+		GetComponent<BoxCollider>().enabled = false;
 		move = false;
 		hp -= dmg;
 		hp = Mathf.Clamp(hp, 0, maxHP);
@@ -105,7 +106,7 @@ public class Enemy : Destructible
 	}
 
 	void Die(){
-		SoulCollectible soul = Instantiate(soulPrefab);
+		SoulCollectible soul = Instantiate(GameController.instance.soulPrefab);
 		soul.transform.position = this.transform.position;
 		soul.SetLaunchVelocity();
 		GameObject poof = Instantiate(GameController.instance.poofPrefab);

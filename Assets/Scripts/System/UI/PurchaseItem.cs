@@ -15,13 +15,27 @@ public class PurchaseItem : MonoBehaviour
 	int buttonWidth = 24;
 	public Image buttonPanel;
 	public Image iconPanel;
-	public Sprite obtainedPanel; 
+	public Sprite activePanel; 
+	public Sprite inactivePanel; 
 	//public PaletteSprite[] palSprites;
 
     // Start is called before the first frame update
     void Start()
     {
         UpdateCount(itemCost);
+		if(UnlockTable.PowerUnlocked(unlockID)){
+			purchased = true;
+			for(int i = 0; i < 3; i++){
+				uiNumbers[i].SetEnabled(false);
+			}
+			if(unlockID == UnlockID.BlackMode || unlockID == UnlockID.BlueMode 
+			|| unlockID == UnlockID.RedMode || unlockID == UnlockID.GreenMode ){
+				iconPanel.sprite = inactivePanel;
+			}
+			else{
+				iconPanel.sprite = UnlockTable.PowerActive(unlockID) ? activePanel : inactivePanel;
+			}
+		}
     }
 
     // Update is called once per frame
@@ -30,6 +44,7 @@ public class PurchaseItem : MonoBehaviour
 		if(purchased && buttonWidth > 1){
 			buttonWidth--;
 			buttonPanel.rectTransform.sizeDelta = new Vector2(buttonWidth,13);
+			
 		}
     }
 
@@ -55,7 +70,20 @@ public class PurchaseItem : MonoBehaviour
 		}
 	}
 
+	public void CheckCost(){
+		for(int i = 0; i < 3; i++){
+			uiNumbers[i].SetDull(itemCost > SoulWallet.SoulCount);
+		}
+	}
+
 	public void AttemptPurchase(){
+		SFXManager.PlayClickClip();
+		if(purchased){
+			bool b = UnlockTable.PowerActive(unlockID);
+			//Debug.Log(b);
+			SetSkillActive(!b);
+			return;
+		}
 		
 		if(itemCost <= SoulWallet.SoulCount){
 			ConfirmPurchase();
@@ -66,12 +94,25 @@ public class PurchaseItem : MonoBehaviour
 	}
 
 	public void ConfirmPurchase(){
+		SFXManager.PlayCoinClip();
 		SoulWallet.SpendSouls(itemCost);
 		UnlockTable.UnlockPower(unlockID);
+		SetSkillActive(true);
 		purchased = true;
-		iconPanel.sprite = obtainedPanel;
 		for(int i = 0; i < 3; i++){
 			uiNumbers[i].SetEnabled(false);
 		}
+	}
+
+	public void SetSkillActive(bool active){
+		UnlockTable.SetPowerActive(unlockID, active, this);
+		if(unlockID == UnlockID.BlackMode || unlockID == UnlockID.BlueMode 
+		|| unlockID == UnlockID.RedMode || unlockID == UnlockID.GreenMode ){
+			iconPanel.sprite = inactivePanel;
+		}
+		else{
+			iconPanel.sprite = active ? activePanel : inactivePanel;
+		}
+
 	}
 }

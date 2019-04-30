@@ -40,5 +40,6 @@ public static class SoulWallet
 
 	public static void SpendSouls(int amount){
 		soulCount -= amount;
+		soulCount = Mathf.Clamp(soulCount,0,9999);
 	}
 }
